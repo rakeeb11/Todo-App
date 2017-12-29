@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Todo App</title>
+
+    <style>
+        .task-container {
+            list-style: none;
+            padding: 10px;
+            margin: 10px;
+            width: 40%;
+            float: left;
+            border: 1px solid #000000;
+            background: #eee;
+        }
+        ul {
+            list-style: none;
+        }
+    </style>
+
+</head>
+<body>
+
+
+<div id="root">
+
+    <h1>To-do list</h1>
+    <input type="text" id="input"/>
+    <button id="add_todo">ADD TASK</button>
+
+    <hr/>
+
+    <div class="task-container">
+        <h3>Pending List</h3>
+        <ul id="pending_list"></ul>
+    </div>
+    <div class="task-container">
+        <h3>Done List</h3>
+        <ul id="done_list"></ul>
+    </div>
+</div>
+
+<script src="out/production/Todo%20App/lib/kotlin.js"></script>
+<script src="out/production/Todo%20App/Todo%20App.js"></script>
+
+
+</body>
+</html>
