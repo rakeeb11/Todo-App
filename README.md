@@ -14,7 +14,7 @@ A demo task management app showcasing the features of Kotlin JS
 # Roadmap
 
 - [X] Simple project implementation
-- [ ] Project implementation with Kotlin niceties: [Extensions](https://kotlinlang.org/docs/reference/extensions.html), [Lambdas](https://kotlinlang.org/docs/reference/lambdas.html) and all that good stuff
+- [X] Project implementation with Kotlin niceties: [Extensions](https://kotlinlang.org/docs/reference/extensions.html), [Lambdas](https://kotlinlang.org/docs/reference/lambdas.html) and all that good stuff
 - [ ] Kotlin JS interop implementation
 - [ ] Project with JS modules implementation
 - [ ] Simple PWA implementation

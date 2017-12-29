@@ -10,10 +10,11 @@ import org.w3c.dom.HTMLInputElement
 import org.w3c.dom.HTMLUListElement
 import kotlin.browser.document
 
-lateinit var taskInput: HTMLInputElement
-lateinit var addTaskAction: HTMLButtonElement
-lateinit var pendingTasks: HTMLUListElement
-lateinit var completedTasks : HTMLUListElement
+
+val taskInput by lazy { document.getTypedElementById<HTMLInputElement>(INPUT) }
+val addTaskAction by lazy { document.getTypedElementById<HTMLButtonElement>(ADD_TASK) }
+val pendingTasks by lazy { document.getTypedElementById<HTMLUListElement>(TODO) }
+val completedTasks by lazy { document.getTypedElementById<HTMLUListElement>(DONE) }
 
 val taskMigrationListener = object : OnTaskMigrate {
 
@@ -32,7 +33,7 @@ val taskListener = object : OnTaskCreate {
 
     override fun onSuccess(task: String) {
         // initialize item and add to task
-        addTask(pendingTasks, createTask(TaskItem(task, TODO), taskMigrationListener))
+        pendingTasks.addTask(createTask(TaskItem(task, TODO), taskMigrationListener))
         // clear text
         taskInput.value = ""
     }
@@ -43,17 +44,11 @@ val taskListener = object : OnTaskCreate {
     }
 }
 
+
 fun main(args: Array<String>) {
-    initViews()
     addUserInteractions()
 }
 
-private fun initViews() {
-    taskInput = document.getElementById(INPUT) as HTMLInputElement
-    addTaskAction = document.getElementById(ADD_TASK) as HTMLButtonElement
-    pendingTasks = document.getElementById(TODO) as HTMLUListElement
-    completedTasks = document.getElementById(DONE) as HTMLUListElement
-}
 private fun addUserInteractions() {
     // initialize listeners
     val buttonListener = ButtonEventListener(taskInput, taskListener)

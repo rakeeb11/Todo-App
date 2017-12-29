@@ -9,36 +9,29 @@ import org.w3c.dom.events.EventListener
 import org.w3c.dom.events.KeyboardEvent
 import kotlin.browser.document
 
-fun createTask(item: TaskItem, taskMigrateListener: OnTaskMigrate): HTMLLIElement {
-    val element = document.createElement(ELEMENT_LI) as HTMLLIElement
-    element.appendChild(createCheckbox(item, TaskCheckboxListener(item, taskMigrateListener)))
-    element.appendChild(createLabel(item.description))
-    return element
+fun createTask(item: TaskItem, taskMigrateListener: OnTaskMigrate) = document.createView<HTMLLIElement>(ELEMENT_LI) {
+    appendChild(createCheckbox(item, TaskCheckboxListener(item, taskMigrateListener)))
+    appendChild(createLabel(item.description))
 }
 
-fun createCheckbox(item: TaskItem, eventListener: EventListener): HTMLInputElement {
-    val checkbox = document.createElement(INPUT) as HTMLInputElement
-    checkbox.type = ELEMENT_CHECKBOX
-    checkbox.checked = item.type != TODO
-    checkbox.addEventListener(ACTION_CLICK, eventListener)
-    return checkbox
+fun createCheckbox(item: TaskItem, eventListener: EventListener) = document.createView<HTMLInputElement>(ELEMENT_INPUT) {
+    type = ELEMENT_CHECKBOX
+    checked = item.type != TODO
+    addEventListener(ACTION_CLICK, eventListener)
 }
 
-fun createLabel(task: String): HTMLSpanElement {
-    val label = document.createElement(ELEMENT_SPAN) as HTMLSpanElement
-    label.textContent = task
-    return label
+fun createLabel(task: String) = document.createView<HTMLLabelElement>(ELEMENT_SPAN) {
+    textContent = task
 }
 
-
-fun addTask(group: HTMLUListElement, task: Element) = group.appendChild(task)
+fun HTMLUListElement.addTask(task: Element) = appendChild(task)
 
 
 class ButtonEventListener(private val task: HTMLInputElement,
-                          private val listener: OnTaskCreate): EventListener {
+                          private val listener: OnTaskCreate) : EventListener {
 
     override fun handleEvent(event: Event) {
-        if(task.value.trim().isBlank()) {
+        if (task.value.trim().isBlank()) {
             listener.onError()
             return
         }
@@ -46,23 +39,23 @@ class ButtonEventListener(private val task: HTMLInputElement,
     }
 }
 
-class InputEventListener(private val button: HTMLButtonElement): EventListener {
+class InputEventListener(private val button: HTMLButtonElement) : EventListener {
 
     override fun handleEvent(event: Event) {
         val code = (event as KeyboardEvent).keyCode
-        if(code != 13) return
+        if (code != 13) return
         button.click()
     }
 }
 
 class TaskCheckboxListener(private var item: TaskItem,
-                           private val taskMigrationListener: OnTaskMigrate): EventListener {
+                           private val taskMigrationListener: OnTaskMigrate) : EventListener {
 
     override fun handleEvent(event: Event) {
         val checkbox = event.target as HTMLInputElement
         checkbox.checked = item.type == TODO
         val task = checkbox.parentElement!!
-        when(item.type) {
+        when (item.type) {
             TODO -> taskMigrationListener.onTaskDone(item, task)
             DONE -> taskMigrationListener.onTaskPending(item, task)
         }
